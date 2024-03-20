@@ -35,7 +35,7 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
     setResponsible('');
     setStartDate('');
     setEndDate('');
-    onClose();
+    //onClose();
   
     // Use fetch API to submit the form data
     const response = await fetch('/api/submit-form', {
@@ -60,12 +60,13 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
       open={isVisible}
       onClose={onClose}
       aria-labelledby="add-link-form-title"
-      aria-describedby="add-link-form-description"
-    >
+      aria-describedby="add-link-form-description">
+        
       <Box sx={style}>
         <Typography id="add-link-form-title" variant="h6" component="h2" textAlign="center">
           Add New Link
         </Typography>
+
         <form onSubmit={handleSubmit}>
           <TextField
             label="Title"

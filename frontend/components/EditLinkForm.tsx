@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography, Modal, Container } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: boolean, mode: string, initialData: any, onClose: () => void }) => {
-
+const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean, initialData: any, onClose: () => void }) => { 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [responsible, setResponsible] = useState('');
@@ -12,20 +11,19 @@ const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: bo
 
     // If the form is in edit mode, initialize state with initialData
     useEffect(() => {
-      if (mode === 'edit' && initialData) {
+      if (initialData) {
         setTitle(initialData.title);
         setDescription(initialData.description);
         setResponsible(initialData.responsible);
         setStartDate(initialData.startDate);
         setEndDate(initialData.endDate);
       }
-    }, [mode, initialData]);
+    }, [initialData]);
 
     const handleSubmit = async (e: any) => {
+      console.log(initialData.id);
       e.preventDefault();
       const formData = { title, description, responsible, startDate, endDate };
-  
-      if (mode === 'edit') {
         // Call your API to update the existing submission
         await fetch(`/api/submissions/${initialData.id}`, {
           method: 'PUT',
@@ -33,20 +31,10 @@ const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: bo
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
-        });
-      } else {
-        // Call your API to add a new submission
-        await fetch('/api/submit-form', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-      }
-  
-      // Close the form and refresh/re-fetch submissions data
-      onClose();
+        }); 
+        // Close the form and refresh/re-fetch submissions data
+        console.log("closing"); 
+        onClose();
     };
 
   return (
@@ -54,13 +42,14 @@ const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: bo
     open={isVisible}
     onClose={onClose}
     aria-labelledby="edit-link-form-modal"
-    aria-describedby="edit-link-form-modal-description"
-  >
+    aria-describedby="edit-link-form-modal-description">
+    
     <Container maxWidth="sm" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
       <Typography variant="h6" id="edit-link-form-modal-title">
-        {mode === 'edit' ? 'Edit Link' : 'Add New Link'}
       </Typography>
+
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+      
         <TextField
           margin="normal"
           required
@@ -92,10 +81,8 @@ const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: bo
             label="Responsible"
             onChange={(e) => setResponsible(e.target.value)}
           >
-            <MenuItem value=""><em>None</em></MenuItem>
-            <MenuItem value="John Doe">John Doe</MenuItem>
-            <MenuItem value="Jane Doe">Jane Doe</MenuItem>
-            {/* Add more options as needed */}
+              <MenuItem value="VISV">VISV</MenuItem>
+              <MenuItem value="MIAD">MIAD</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -126,8 +113,9 @@ const EditLinkForm = ({ isVisible, mode, initialData, onClose }: { isVisible: bo
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          {mode === 'edit' ? 'Save Changes' : 'Add Link'}
+          Save Changes
         </Button>
+        <Button variant="outlined" onClick={onClose}>Cancel</Button>
       </Box>
     </Container>
   </Modal>
