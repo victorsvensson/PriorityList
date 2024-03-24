@@ -1,7 +1,8 @@
-// components/AddLinkForm.tsx
 import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Modal, Container } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { submitPost } from '../services/postService';
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -14,44 +15,32 @@ const style = {
   p: 4,
   display: 'flex',
   flexDirection: 'column',
-  gap: 2, // Space between elements
+  gap: 2,
 };
 
 const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () => void }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [responsible, setResponsible] = useState(''); // Add this line
+  const [responsible, setResponsible] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // Create the submission object
     const submission = { title, description, responsible, startDate, endDate };
 
-    // Reset fields
-    setTitle('');
-    setDescription('');
-    setResponsible('');
-    setStartDate('');
-    setEndDate('');
-    //onClose();
-  
-    // Use fetch API to submit the form data
-    const response = await fetch('/api/submit-form', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(submission),
-    });
-  
-    if (response.ok) {
-      console.log('Submission added!');
-      // Reset form or provide user feedback
-    } else {
-      console.error('Failed to add submission');
-      // Handle error
+    try {
+      await submitPost(submission);
+      //Reset the fields
+      setTitle('');
+      setDescription('');
+      setResponsible('');
+      setStartDate('');
+      setEndDate('');
+      onClose();
+
+    }catch(error){
+      console.log(error);
     }
   };
 

@@ -64,7 +64,7 @@ export default function Home() {
   };
 
   const fetchSubmissions = async () => {
-    const response = await fetch('/api/submissions');
+    const response = await fetch('/api/getSubmissions');
     const data = await response.json();
     setSubmissions(data);
   };
@@ -91,7 +91,7 @@ export default function Home() {
 }
 
 <Container>
-<Typography variant="h3" component="h3" text-align="center">
+<Typography variant="h1" component="h1">
     Prioriteringslista klientgruppen
   </Typography>
   <Button sx={{marginTop: 1}} variant="contained" color="success" onClick={handleOpenForm}>New</Button>
@@ -128,14 +128,6 @@ export default function Home() {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  {/* <Button sx={{marginTop: 1}}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => handleEditButtonClick(submission.id)}
-                  >
-                    Edit
-                  </Button> */}
-                  <TableCell>
                 <Button
                   sx={{marginTop: 1}}
                   variant="contained"
@@ -144,7 +136,6 @@ export default function Home() {
                 >
                   Edit
                 </Button>
-              </TableCell>
               </TableCell>
               </TableRow>
             ))}
