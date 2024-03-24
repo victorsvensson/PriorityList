@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography, Modal, Container } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { editPost } from '../services/editService';
 
 const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean, initialData: any, onClose: () => void }) => { 
   const [title, setTitle] = useState('');
@@ -9,7 +10,6 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-    // If the form is in edit mode, initialize state with initialData
     useEffect(() => {
       if (initialData) {
         setTitle(initialData.title);
@@ -21,19 +21,9 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
     }, [initialData]);
 
     const handleSubmit = async (e: any) => {
-      console.log(initialData.id);
       e.preventDefault();
       const formData = { title, description, responsible, startDate, endDate };
-        // Call your API to update the existing submission
-        await fetch(`/api/submissions/${initialData.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        }); 
-        // Close the form and refresh/re-fetch submissions data
-        console.log("closing"); 
+        await editPost(formData, initialData);
         onClose();
     };
 

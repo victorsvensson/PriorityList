@@ -1,18 +1,10 @@
 'use client'
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import AddLinkForm from '../components/AddLinkForm';
-import Layout from '../layouts/layout'; // Adjust the import path as necessary
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, Button, Typography } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import ConfirmationDialog from '../components/ConfirmationDialog'; // Adjust the path as needed
-import EditLinkForm from '../components/EditLinkForm'; // Adjust the path as needed
-
-
-// Create a theme instance.
-const theme = createTheme({
-  // Customize your theme here
-});
+import ConfirmationDialog from '../components/ConfirmationDialog';
+import EditLinkForm from '../components/EditLinkForm';
+import { deletePost } from '../services/deleteService';
 
 export default function Home() {
 
@@ -21,26 +13,24 @@ export default function Home() {
   const handleOpenForm = () => setFormVisible(true);
   const handleCloseForm = () => {
     setFormVisible(false);
-    setEditingData(null); // Reset editing data
-    fetchSubmissions(); // Refresh the submissions list to reflect any changes
+    setEditingData(null);
+    fetchSubmissions();
   };
 
   const [submissions, setSubmissions] = useState<any[]>([])
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentSubmissionId, setCurrentSubmissionId] = useState(null);
 
-  //Edit
   const [editFormVisible, setEditFormVisible] = useState(false);
-  const handleOpenEditForm = () => setEditFormVisible(true);
-  const [editingData, setEditingData] = useState(null); // Assuming the data structure matches your submissions
+  const [editingData, setEditingData] = useState(null);
 
   useEffect(() => {
     fetchSubmissions();
   }, [handleCloseForm]);
 
   const handleEditButtonClick = (id: any) => {
-    setEditingData(id); // Set the data to be edited
-    setEditFormVisible(true); // Show the form
+    setEditingData(id); 
+    setEditFormVisible(true);
   };
 
   const handleOpenDialog = (id: any) => {
@@ -55,23 +45,19 @@ export default function Home() {
 
   const handleConfirmDelete = async () => {
     if (currentSubmissionId) {
-      await fetch(`/api/submissions/${currentSubmissionId}`, {
-        method: 'DELETE',
-      });
+      await deletePost(currentSubmissionId);
       setDialogOpen(false);
-      // Re-fetch submissions or update state as needed
     }
   };
 
   const fetchSubmissions = async () => {
-    const response = await fetch('/api/getSubmissions');
+    const response = await fetch(`/api/submissions/getSubmissions`);
     const data = await response.json();
     setSubmissions(data);
   };
 
   return (
     <div>
-      
   <ConfirmationDialog
     isOpen={dialogOpen}
     onClose={handleCloseDialog}
@@ -91,7 +77,11 @@ export default function Home() {
 }
 
 <Container>
-<Typography variant="h1" component="h1">
+<Typography variant="h1" component="h1"       
+      sx={{
+        textAlign: 'center',
+        fontSize: '2.5rem', // Customize the font size as needed
+      }}>
     Prioriteringslista klientgruppen
   </Typography>
   <Button sx={{marginTop: 1}} variant="contained" color="success" onClick={handleOpenForm}>New</Button>
@@ -132,7 +122,7 @@ export default function Home() {
                   sx={{marginTop: 1}}
                   variant="contained"
                   color="primary"
-                  onClick={() => handleEditButtonClick(submission)} // Pass the entire submission as the parameter
+                  onClick={() => handleEditButtonClick(submission)}
                 >
                   Edit
                 </Button>
