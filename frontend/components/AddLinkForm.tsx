@@ -22,12 +22,13 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [responsible, setResponsible] = useState('');
+  const [status, setStatus] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const submission = { title, description, responsible, startDate, endDate };
+    const submission = { title, description, responsible, status, startDate, endDate };
 
     try {
       await submitPost(submission);
@@ -35,6 +36,7 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
       setTitle('');
       setDescription('');
       setResponsible('');
+      setStatus('');
       setStartDate('');
       setEndDate('');
       onClose();
@@ -86,6 +88,21 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
                 >
                     <MenuItem value="VISV">VISV</MenuItem>
                     <MenuItem value="MIAD">MIAD</MenuItem>
+                </Select>
+                </FormControl>
+          </Box>
+          <Box sx={{ marginBottom: 2 }}>
+            <FormControl fullWidth>
+                <InputLabel id="status-label">Status</InputLabel>
+                <Select
+                    labelId="status-label"
+                    value={status}
+                    label="Status"
+                    onChange={(e) => setStatus(e.target.value)}
+                >
+                    <MenuItem value="Not Started">Not started</MenuItem>
+                    <MenuItem value="Started">Ongoing</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
                 </Select>
                 </FormControl>
           </Box>

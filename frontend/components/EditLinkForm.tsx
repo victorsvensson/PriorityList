@@ -2,11 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Box, Typography, Modal, Container } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { editPost } from '../services/editService';
+import { deletePost } from '../services/deleteService';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 
 const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean, initialData: any, onClose: () => void }) => { 
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (initialData.id) {
+      await deletePost(initialData.id);
+      setDialogOpen(false);
+      onClose();
+    }
+  };
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    onClose();
+  };
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [responsible, setResponsible] = useState('');
+  const [status, setStatus] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
@@ -15,6 +36,7 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
         setTitle(initialData.title);
         setDescription(initialData.description);
         setResponsible(initialData.responsible);
+        setStatus(initialData.status);
         setStartDate(initialData.startDate);
         setEndDate(initialData.endDate);
       }
@@ -22,12 +44,13 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
 
     const handleSubmit = async (e: any) => {
       e.preventDefault();
-      const formData = { title, description, responsible, startDate, endDate };
+      const formData = { title, description, responsible, status, startDate, endDate };
         await editPost(formData, initialData);
         onClose();
     };
 
   return (
+    
     <Modal
     open={isVisible}
     onClose={onClose}
@@ -37,6 +60,14 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
     <Container maxWidth="sm" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
       <Typography variant="h6" id="edit-link-form-modal-title">
       </Typography>
+      <ConfirmationDialog
+        isOpen={dialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this submission?"
+      />
+
 
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       
@@ -75,6 +106,20 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
               <MenuItem value="MIAD">MIAD</MenuItem>
           </Select>
         </FormControl>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="status-label">Status</InputLabel>
+          <Select
+            labelId="status-label"
+            id="status"
+            value={status}
+            label="Status"
+            onChange={(e) => setStatus(e.target.value)}
+          >
+              <MenuItem value="Not Started">Not Started</MenuItem>
+              <MenuItem value="Started">In Progress</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           margin="normal"
           required
@@ -105,7 +150,18 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
         >
           Save Changes
         </Button>
-        <Button variant="outlined" onClick={onClose}>Cancel</Button>
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 2 }}>
+            <Button variant="outlined" onClick={onClose}>Cancel</Button>
+            <Button variant="contained" color="error" onClick={handleOpenDialog}>Delete</Button>
+          </Box>
+        {/* <Button sx={{marginTop: 1}}
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleOpenDialog(submission.id)}
+                  >
+                  Remove
+                  </Button>  */}
       </Box>
     </Container>
   </Modal>
