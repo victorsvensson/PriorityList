@@ -3,7 +3,6 @@ import { TextField, Button, Box, Typography, Modal, Container } from '@mui/mater
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { submitPost } from '../services/postService';
 
-
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -32,7 +31,6 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
 
     try {
       await submitPost(submission);
-      //Reset the fields
       setTitle('');
       setDescription('');
       setResponsible('');
@@ -40,7 +38,6 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
       setStartDate('');
       setEndDate('');
       onClose();
-
     }catch(error){
       console.log(error);
     }
@@ -101,7 +98,7 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
                     onChange={(e) => setStatus(e.target.value)}
                 >
                     <MenuItem value="Not Started">Not started</MenuItem>
-                    <MenuItem value="Started">Ongoing</MenuItem>
+                    <MenuItem value="In Progress">In Progress</MenuItem>
                     <MenuItem value="Completed">Completed</MenuItem>
                 </Select>
                 </FormControl>

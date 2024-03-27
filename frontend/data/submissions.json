@@ -1,38 +1,20 @@
 [
   {
-    "title": "awdjb",
-    "description": "dqwjkdbjk",
+    "title": "awne",
+    "description": "awne",
     "responsible": "VISV",
-    "status": "Completed",
-    "startDate": "2024-03-27",
-    "endDate": "2024-03-28",
-    "id": "f16fe4b5-4663-4d39-a578-08d87cac43ed"
-  },
-  {
-    "title": "qwdnwdqjkwdnqwd",
-    "description": "wdnqwdjkqwnd",
-    "responsible": "MIAD",
-    "status": "Completed",
+    "status": "Not Started",
     "startDate": "",
     "endDate": "",
-    "id": "2410ef4f-546a-4283-b67a-3e6b0d183737"
+    "id": "76c95267-2a9f-4451-8114-bbf8084b12c8"
   },
   {
-    "title": "qweklnqw",
-    "description": "eknqweklqwne",
+    "title": "aweawe",
+    "description": "awee",
     "responsible": "VISV",
     "status": "Completed",
     "startDate": "",
     "endDate": "",
-    "id": "7c638f84-f2d3-4b9b-b722-55da1033db9a"
-  },
-  {
-    "title": "asdasm,d",
-    "description": "sdqmdqs",
-    "responsible": "VISV",
-    "status": "Started",
-    "startDate": "",
-    "endDate": "",
-    "id": "31f59fcd-bc0f-4c10-8617-18b65069f97c"
+    "id": "9ce1ce4e-9411-4c1f-b21f-14b9082bd163"
   }
 ]

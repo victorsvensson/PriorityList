@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AddLinkForm from '../components/AddLinkForm';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, Button, Typography } from '@mui/material';
-import ConfirmationDialog from '../components/ConfirmationDialog';
 import EditLinkForm from '../components/EditLinkForm';
-import { deletePost } from '../services/deleteService';
 
 export default function Home() {
 
   const [formVisible, setFormVisible] = useState(false);
   const [submissions, setSubmissions] = useState<any[]>([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentSubmissionId, setCurrentSubmissionId] = useState(null);
   const [editFormVisible, setEditFormVisible] = useState(false);
   const [editingData, setEditingData] = useState(null);
 
@@ -25,6 +21,7 @@ export default function Home() {
   };
 
   const handleOpenForm = () => setFormVisible(true);
+
   const handleCloseForm = () => {
     setFormVisible(false);
     setEditingData(null);
@@ -36,34 +33,13 @@ export default function Home() {
     setEditFormVisible(true);
   };
 
-  const handleOpenDialog = (id: any) => {
-    setCurrentSubmissionId(id);
-    setDialogOpen(true);
-  };
-
   const handleCloseDialog = () => {
-    setDialogOpen(false);
     setEditFormVisible(false);
-  };
-
-  const handleConfirmDelete = async () => {
-    if (currentSubmissionId) {
-      await deletePost(currentSubmissionId);
-      setDialogOpen(false);
-      fetchSubmissions();
-    }
+    fetchSubmissions();
   };
 
   return (
     <div>
-      <ConfirmationDialog
-        isOpen={dialogOpen}
-        onClose={handleCloseDialog}
-        onConfirm={handleConfirmDelete}
-        title="Confirm Deletion"
-        message="Are you sure you want to delete this submission?"
-      />
-
       {editFormVisible && (
         <EditLinkForm
           isVisible={editFormVisible}
@@ -71,7 +47,6 @@ export default function Home() {
           onClose={handleCloseDialog}
         />
       )}
-
       <Container>
         <Typography variant="h1" component="h1"       
           sx={{
@@ -83,8 +58,7 @@ export default function Home() {
         <Button sx={{marginTop: 1}} variant="contained" color="success" onClick={handleOpenForm}>New</Button>
 
         <AddLinkForm isVisible={formVisible} onClose={handleCloseForm} />
-        
-        {/* First Table for Not started or In progress submissions */}
+
         <TableContainer component={Paper} sx={{ marginTop: 4 }}>
           <Table aria-label="submissions table">
             <TableHead>
@@ -122,17 +96,27 @@ export default function Home() {
             </TableBody>
           </Table>
         </TableContainer>
-
-        {/* Second Table for Completed submissions */}
-        <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-          <Typography variant="h1" component="h1"       
+        <Typography variant="h1" component="h1"       
             sx={{
               textAlign: 'center',
-              fontSize: '2.5rem', // Customize the font size as needed
+              fontSize: '2.5rem',
+              marginTop: 4,
             }}>
             Avslutade
           </Typography>
+        <TableContainer component={Paper} sx={{ marginTop: 4 }}>
           <Table aria-label="completed submissions table">
+          <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Responsible</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Start Date</TableCell>
+                <TableCell>End Date</TableCell>
+                <TableCell>Edit</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
               {submissions.filter(submission => submission.status === 'Completed').map((submission, index) => (
                 <TableRow key={index}>
@@ -157,7 +141,6 @@ export default function Home() {
             </TableBody>
           </Table>
         </TableContainer>
-
       </Container>
     </div>
   );

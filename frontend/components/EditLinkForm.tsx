@@ -60,6 +60,8 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
     <Container maxWidth="sm" sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
       <Typography variant="h6" id="edit-link-form-modal-title">
       </Typography>
+
+      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
       <ConfirmationDialog
         isOpen={dialogOpen}
         onClose={handleCloseDialog}
@@ -67,10 +69,6 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
         title="Confirm Deletion"
         message="Are you sure you want to delete this submission?"
       />
-
-
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-      
         <TextField
           margin="normal"
           required
@@ -116,7 +114,7 @@ const EditLinkForm = ({ isVisible, initialData, onClose }: { isVisible: boolean,
             onChange={(e) => setStatus(e.target.value)}
           >
               <MenuItem value="Not Started">Not Started</MenuItem>
-              <MenuItem value="Started">In Progress</MenuItem>
+              <MenuItem value="In Progress">In Progress</MenuItem>
               <MenuItem value="Completed">Completed</MenuItem>
           </Select>
         </FormControl>
