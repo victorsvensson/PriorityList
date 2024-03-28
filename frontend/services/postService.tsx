@@ -11,7 +11,7 @@ export async function submitPost(data: FormSubmissionData): Promise<void> {
     const response = await fetch('/api/submissions/postSubmission', {
         method: 'POST',
         headers: {
-        'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
     });
