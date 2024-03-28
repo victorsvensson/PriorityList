@@ -22,12 +22,13 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
     const [description, setDescription] = useState('');
     const [responsible, setResponsible] = useState('');
     const [status, setStatus] = useState('');
+    const [priority, setPriority] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        const submission = { title, description, responsible, status, startDate, endDate };
+        const submission = { title, description, responsible, status, priority, startDate, endDate };
 
         try {
             await submitPost(submission);
@@ -35,6 +36,7 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
             setDescription('');
             setResponsible('');
             setStatus('');
+            setPriority('');
             setStartDate('');
             setEndDate('');
             onClose();
@@ -100,6 +102,21 @@ const AddLinkForm = ({ isVisible, onClose }: { isVisible: boolean, onClose: () =
                                 <MenuItem value="Not Started">Not started</MenuItem>
                                 <MenuItem value="In Progress">In Progress</MenuItem>
                                 <MenuItem value="Completed">Completed</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    <Box sx={{ marginBottom: 2 }}>
+                        <FormControl fullWidth>
+                            <InputLabel id="priority-label">Priority</InputLabel>
+                            <Select
+                                labelId="priority-label"
+                                value={priority}
+                                label="Priority"
+                                onChange={(e) => setPriority(e.target.value)}
+                            >
+                                <MenuItem value="1">1</MenuItem>
+                                <MenuItem value="2">2</MenuItem>
+                                <MenuItem value="3">3</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>

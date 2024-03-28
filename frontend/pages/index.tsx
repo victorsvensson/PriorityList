@@ -60,6 +60,10 @@ export default function Home() {
         setAvslutadeVisible(true);
     };
 
+    const sortSubmissionsByPriority = (submissions: any) => {
+        return submissions.sort((a: any, b: any) => a.priority - b.priority);
+    };
+
     return (
         <div>
             {editFormVisible && (
@@ -131,20 +135,22 @@ export default function Home() {
                                     <TableCell>Description</TableCell>
                                     <TableCell>Responsible</TableCell>
                                     <TableCell>Status</TableCell>
+                                    <TableCell>Priority</TableCell>
                                     <TableCell>Start Date</TableCell>
                                     <TableCell>End Date</TableCell>
                                     <TableCell>Edit</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {submissions
-                                    .filter((submission) => submission.status !== "Completed")
-                                    .map((submission, index) => (
+                                {sortSubmissionsByPriority(submissions)
+                                    .filter((submission: any) => submission.status !== "Completed")
+                                    .map((submission: any, index: any) => (
                                         <TableRow key={index}>
                                             <TableCell>{submission.title}</TableCell>
                                             <TableCell>{submission.description}</TableCell>
                                             <TableCell>{submission.responsible}</TableCell>
                                             <TableCell>{submission.status}</TableCell>
+                                            <TableCell>{submission.priority}</TableCell>
                                             <TableCell>{submission.startDate}</TableCell>
                                             <TableCell>{submission.endDate}</TableCell>
                                             <TableCell>
@@ -183,12 +189,14 @@ export default function Home() {
                                     <TableCell>Description</TableCell>
                                     <TableCell>Responsible</TableCell>
                                     <TableCell>Status</TableCell>
+                                    <TableCell>Priority</TableCell>
                                     <TableCell>Start Date</TableCell>
                                     <TableCell>End Date</TableCell>
                                     <TableCell>Edit</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
+
                                 {submissions
                                     .filter((submission) => submission.status === "Completed")
                                     .map((submission, index) => (
@@ -197,6 +205,7 @@ export default function Home() {
                                             <TableCell>{submission.description}</TableCell>
                                             <TableCell>{submission.responsible}</TableCell>
                                             <TableCell>{submission.status}</TableCell>
+                                            <TableCell>{submission.priority}</TableCell>
                                             <TableCell>{submission.startDate}</TableCell>
                                             <TableCell>{submission.endDate}</TableCell>
                                             <TableCell>

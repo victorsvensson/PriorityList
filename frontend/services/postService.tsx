@@ -3,6 +3,7 @@ interface FormSubmissionData {
     description: string;
     responsible: string;
     status: string;
+    priority: string;
     startDate: string;
     endDate: string;
 }

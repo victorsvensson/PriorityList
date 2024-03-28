@@ -25,6 +25,7 @@ const EditLinkForm = ({
     const [description, setDescription] = useState("");
     const [responsible, setResponsible] = useState("");
     const [status, setStatus] = useState("");
+    const [priority, setPriority] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -51,6 +52,7 @@ const EditLinkForm = ({
             setDescription(initialData.description);
             setResponsible(initialData.responsible);
             setStatus(initialData.status);
+            setPriority(initialData.priority);
             setStartDate(initialData.startDate);
             setEndDate(initialData.endDate);
         }
@@ -63,6 +65,7 @@ const EditLinkForm = ({
             description,
             responsible,
             status,
+            priority,
             startDate,
             endDate,
         };
@@ -146,6 +149,20 @@ const EditLinkForm = ({
                             <MenuItem value="Not Started">Not Started</MenuItem>
                             <MenuItem value="In Progress">In Progress</MenuItem>
                             <MenuItem value="Completed">Completed</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="priority-label">Priority</InputLabel>
+                        <Select
+                            labelId="priority-label"
+                            id="priority"
+                            value={priority}
+                            label="Priority"
+                            onChange={(e) => setPriority(e.target.value)}
+                        >
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="2">2</MenuItem>
+                            <MenuItem value="3">3</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField
