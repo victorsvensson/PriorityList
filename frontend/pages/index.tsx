@@ -19,6 +19,8 @@ export default function Home() {
     const [submissions, setSubmissions] = useState<any[]>([]);
     const [editFormVisible, setEditFormVisible] = useState(false);
     const [editingData, setEditingData] = useState(null);
+    const [prioriteringslistaVisible, setPrioriteringslistaVisible] = useState(true);
+    const [avslutadeVisible, setAvslutadeVisible] = useState(false);
 
     useEffect(() => {
         fetchSubmissions();
@@ -48,6 +50,16 @@ export default function Home() {
         fetchSubmissions();
     };
 
+    const togglePrioriteringslista = () => {
+        setPrioriteringslistaVisible(true);
+        setAvslutadeVisible(false);
+    };
+
+    const toggleAvslutade = () => {
+        setPrioriteringslistaVisible(false);
+        setAvslutadeVisible(true);
+    };
+
     return (
         <div>
             {editFormVisible && (
@@ -64,6 +76,7 @@ export default function Home() {
                     sx={{
                         textAlign: "center",
                         fontSize: "2.5rem", // Customize the font size as needed
+                        marginBottom: "1rem",
                     }}
                 >
                     Prioriteringslista klientgruppen
@@ -79,95 +92,129 @@ export default function Home() {
 
                 <AddLinkForm isVisible={formVisible} onClose={handleCloseForm} />
 
-                <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-                    <Table aria-label="submissions table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Title</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Responsible</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Start Date</TableCell>
-                                <TableCell>End Date</TableCell>
-                                <TableCell>Edit</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {submissions
-                                .filter((submission) => submission.status !== "Completed")
-                                .map((submission, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>{submission.title}</TableCell>
-                                        <TableCell>{submission.description}</TableCell>
-                                        <TableCell>{submission.responsible}</TableCell>
-                                        <TableCell>{submission.status}</TableCell>
-                                        <TableCell>{submission.startDate}</TableCell>
-                                        <TableCell>{submission.endDate}</TableCell>
-                                        <TableCell>
-                                            <Button
-                                                sx={{ marginTop: 1 }}
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => handleEditButtonClick(submission)}
-                                            >
-                                                Edit
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <Typography
-                    variant="h1"
-                    component="h1"
-                    sx={{
-                        textAlign: "center",
-                        fontSize: "2.5rem",
-                        marginTop: 4,
-                    }}
+                <Button
+                    sx={{ marginTop: 1, float: "right" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={toggleAvslutade}
+                    disabled={avslutadeVisible}
                 >
                     Avslutade
-                </Typography>
-                <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-                    <Table aria-label="completed submissions table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Title</TableCell>
-                                <TableCell>Description</TableCell>
-                                <TableCell>Responsible</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell>Start Date</TableCell>
-                                <TableCell>End Date</TableCell>
-                                <TableCell>Edit</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {submissions
-                                .filter((submission) => submission.status === "Completed")
-                                .map((submission, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell>{submission.title}</TableCell>
-                                        <TableCell>{submission.description}</TableCell>
-                                        <TableCell>{submission.responsible}</TableCell>
-                                        <TableCell>{submission.status}</TableCell>
-                                        <TableCell>{submission.startDate}</TableCell>
-                                        <TableCell>{submission.endDate}</TableCell>
-                                        <TableCell>
-                                            <Button
-                                                sx={{ marginTop: 1 }}
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => handleEditButtonClick(submission)}
-                                            >
-                                                Edit
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                </Button>
+
+                <Button
+                    sx={{ marginTop: 1, float: "right", marginRight: "1rem" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={togglePrioriteringslista}
+                    disabled={prioriteringslistaVisible}
+                >
+                    Ej påbörjade / Pågående
+                </Button>
+
+                {prioriteringslistaVisible && (
+                    <TableContainer component={Paper} sx={{ marginTop: 4 }}>
+                        <Typography
+                            variant="h2"
+                            component="h2"
+                            sx={{
+                                textAlign: "left",
+                                fontSize: "1.5rem", // Customize the font size as needed
+                            }}
+                        >
+                            Ej påbörjade / Pågående
+                        </Typography>
+                        <Table aria-label="submissions table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Title</TableCell>
+                                    <TableCell>Description</TableCell>
+                                    <TableCell>Responsible</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell>Start Date</TableCell>
+                                    <TableCell>End Date</TableCell>
+                                    <TableCell>Edit</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {submissions
+                                    .filter((submission) => submission.status !== "Completed")
+                                    .map((submission, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{submission.title}</TableCell>
+                                            <TableCell>{submission.description}</TableCell>
+                                            <TableCell>{submission.responsible}</TableCell>
+                                            <TableCell>{submission.status}</TableCell>
+                                            <TableCell>{submission.startDate}</TableCell>
+                                            <TableCell>{submission.endDate}</TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    sx={{ marginTop: 1 }}
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() => handleEditButtonClick(submission)}
+                                                >
+                                                    Edit
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
+
+                {avslutadeVisible && (
+                    <TableContainer component={Paper} sx={{ marginTop: 4 }}>
+                        <Typography
+                            variant="h2"
+                            component="h2"
+                            sx={{
+                                textAlign: "left",
+                                fontSize: "1.5rem", // Customize the font size as needed
+                            }}
+                        >
+                            Avslutade
+                        </Typography>
+                        <Table aria-label="completed submissions table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Title</TableCell>
+                                    <TableCell>Description</TableCell>
+                                    <TableCell>Responsible</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell>Start Date</TableCell>
+                                    <TableCell>End Date</TableCell>
+                                    <TableCell>Edit</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {submissions
+                                    .filter((submission) => submission.status === "Completed")
+                                    .map((submission, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell>{submission.title}</TableCell>
+                                            <TableCell>{submission.description}</TableCell>
+                                            <TableCell>{submission.responsible}</TableCell>
+                                            <TableCell>{submission.status}</TableCell>
+                                            <TableCell>{submission.startDate}</TableCell>
+                                            <TableCell>{submission.endDate}</TableCell>
+                                            <TableCell>
+                                                <Button
+                                                    sx={{ marginTop: 1 }}
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={() => handleEditButtonClick(submission)}
+                                                >
+                                                    Edit
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
             </Container>
         </div>
     );
